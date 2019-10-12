@@ -87,10 +87,9 @@ function dailyReminder() {
       // get reminder value
       var currentRowNum = (Number(i)+startRow).toFixed(0)
       var reminderRange = spreadsheet.getRange("E"+currentRowNum)
-      var currentVal = +(reminderRange.getValues()) // convert to Number
         
-      if (reminderCol == 2 && isToday) {
-        reminderRange.setValue(currentVal+1)
+      if (isToday) {
+        reminderRange.setValue(-1)
         content = 'reminder (today) - closed holidays'
         email(emailCol, content, returnCol, copy)
       }
