@@ -43,6 +43,7 @@ function weeklyReminder() {
       var daysInMilliSeconds = 86400000
       var isWithinOneWeek = cellDate<(today+(7*daysInMilliSeconds))
       var isWithinTwoWeeks = cellDate<(today+(14*daysInMilliSeconds))
+      var isToday = (new Date(returnCol).toDateString()==(new Date()).toDateString())
       
       // get reminder value
       var currentRowNum = (Number(i)+startRow).toFixed(0)
@@ -53,7 +54,7 @@ function weeklyReminder() {
         reminderRange.setValue(currentVal+1)
         content = 'reminder (within 2 weeks) - closed holidays'
         email(emailCol, content, returnCol, '')
-      } else if (reminderCol == 1 && isWithinOneWeek) {
+      } else if (!isToday && reminderCol == 1 && isWithinOneWeek) {
         reminderRange.setValue(currentVal+1)
         content = 'reminder (within 1 week) - closed on holidays'
         email(emailCol, content, returnCol, '')
