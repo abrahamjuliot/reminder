@@ -73,7 +73,6 @@ function weeklyReminder() {
 
 }
 
-
 function dailyReminder() {
   var sheet = getSheet()
   var startRow = sheet.startRow
@@ -104,7 +103,7 @@ function dailyReminder() {
         var thisAccessCol = thisRow[1]
         var thisNameCol = thisRow[2]
         var returnedCol = thisRow[4]
-        if (new RegExp(nameCol).test(thisNameCol) && !returnedCol) {
+        if ((new RegExp(thisNameCol).test(nameCol) || thisNameCol == nameCol) && !returnedCol) {
           keys.push(thisKeyCol+' - '+thisAccessCol)
         }
       }
