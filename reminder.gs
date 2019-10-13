@@ -4,8 +4,9 @@ function days(x) {
   return x * daysInMilliSeconds
 }
 function isToday(x) { return (new Date(x).toDateString()==(new Date()).toDateString()) }
-function email(recipent, content, date, copy) {
-  return GmailApp.sendEmail(recipent.replace(/;/g, ','), 'Reminder: return keys by '+(copy&&'today -- ')+locale(date), content, {
+function email(recipent, content, date, copy, due) {
+  
+  return GmailApp.sendEmail(recipent.replace(/;/g, ','), 'Reminder: '+(due?due+' key'+(due>1?'s':'')+' due -- ':'')+'return keys by '+(copy?'today -- ':'')+locale(date), content, {
     name: 'BEES Admin',
     cc: copy
   })
@@ -62,10 +63,10 @@ function weeklyReminder() {
         
       if (reminderCol == 0 && isWithinOneMonth) {
         reminderRange.setValue(currentVal+1)
-        email(emailCol, content(nameCol, scheduleCol, ''), scheduleCol, '')
+        email(emailCol, content(nameCol, scheduleCol), scheduleCol)
       } else if (!isToday(scheduleCol) && reminderCol == 1 && isWithinOneWeek) {
         reminderRange.setValue(currentVal+1)
-        email(emailCol, content(nameCol, scheduleCol, ''), scheduleCol, '')
+        email(emailCol, content(nameCol, scheduleCol), scheduleCol)
       }
     }
   }
@@ -79,7 +80,7 @@ function dailyReminder() {
   var reminderColLetter = sheet.reminderColLetter
   var spreadsheet = sheet.spreadsheet
   var data = sheet.data
-  var copy = 'abrahamjuliot@gmail.com' // admin email
+  var copy = '' // admin email
   
   for (var i in data) {
     var scheduleCol = data[i][3]
@@ -109,7 +110,7 @@ function dailyReminder() {
       }
       
       reminderRange.setValue(-1)
-      email(emailCol, content(nameCol, scheduleCol, keys), scheduleCol, copy)
+      email(emailCol, content(nameCol, scheduleCol, keys), scheduleCol, copy, keys.length)
       
     }
   }
